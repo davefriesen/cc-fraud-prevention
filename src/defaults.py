@@ -1,4 +1,3 @@
-
 # Set basic options for consistent output
 PRECISION = 3
 np.set_printoptions(precision = PRECISION)
