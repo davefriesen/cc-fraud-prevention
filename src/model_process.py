@@ -48,7 +48,7 @@ class ModelProcess:
         self.X = {'train': X_train, 'val': X_val, 'test': X_test}
         self.y = {'train': y_train, 'val': y_val, 'test': y_test}
 
-        self.classes = classes if not None else sorted(y_train.iloc[:, 0].unique())
+        self.classes = classes if classes is not None else sorted(y_train.iloc[:, 0].unique())
         if len(self.classes) > 2:
             self.f1_average = 'macro'
         else:
@@ -56,7 +56,7 @@ class ModelProcess:
 
         self.cat_cols = cat_cols
         self.num_cols = num_cols
-
+        
         # Set descriptive model process name
         self.name = self.algorithm.__class__.__name__
         if id is not None:
@@ -73,7 +73,7 @@ class ModelProcess:
         #   (Note not necessarily the same as the Class parameter cat_cols,
         #   which may already be encoded and simply be specifying a need to
         #   impute using the 'categorical' imputation approach here)
-        self.enc_cols = self.X['train'].select_dtypes(include=['object']).columns
+        self.enc_cols = self.X['train'].select_dtypes(include=['object', 'category']).columns
         self.enc_transformer = make_pipeline(OneHotEncoder(handle_unknown='ignore',
                                                            sparse=False)) 
 
@@ -88,9 +88,10 @@ class ModelProcess:
 
         # Create preprocessor using transformers created above
         self.transformers = []
-        if self.cat_cols is not None:
-            self.transformers.append(('cat', self.cat_transformer,
-                                      self.X['train'][self.cat_cols].columns))
+# This code not needed for project; commenting-out for refinement
+#        if self.cat_cols is not None:
+#            self.transformers.append(('cat', self.cat_transformer,
+#                                      self.X['train'][self.cat_cols].columns))
         if self.enc_cols is not None:
             self.transformers.append(('enc', self.enc_transformer,
                                       self.X['train'][self.enc_cols].columns))
