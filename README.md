@@ -1,5 +1,5 @@
 # cc-fraud-prevention
-Credit Card Fraud: Prevention through Datta Science
+Credit Card Fraud: Prevention through Data Science
 
 -- Project Status: [Completed]
 
